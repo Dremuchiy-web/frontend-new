@@ -1,0 +1,26 @@
+// scss/style.scss
+// Переменные
+@import "../node_modules/bootstrap/scss/bootstrap";
+$primary-color: #007bff;
+$secondary-color: #6c757d;
+$font-family: sans-serif;
+
+body {
+  font-family: $font-family;
+}
+
+h1 {
+  color: $primary-color;
+}
+
+.my-button {
+  background-color: $secondary-color;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+
+  &:hover {  // Вложенность для стилизации при наведении
+    background-color: darken($secondary-color, 10%);
+  }
+}

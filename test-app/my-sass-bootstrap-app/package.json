@@ -1,0 +1,22 @@
+{
+    "name": "my-sass-bootstrap-app",
+    "version": "1.0.0",
+    "description": "A simple app using Sass and Bootstrap",
+    "main": "server.js",
+    "scripts": {
+        "compile-sass": "sass scss:css",
+        "watch-sass": "sass --watch scss:css",
+        "start": "live-server",
+        "serve": "node server.js"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "bootstrap": "^5.3.0"
+    },
+    "devDependencies": {
+        "live-server": "^1.2.2",
+        "sass": "^1.85.0"
+    }
+}
