@@ -1,0 +1,157 @@
+
+openapi: 3.0.0
+info:
+  title: API для управления товарами
+  version: 1.0.0
+  description: API для добавления, редактирования и удаления товаров в интернет-магазине.
+servers:
+  - url: http://localhost:8080
+    description: Локальный сервер разработки
+
+paths:
+  /products:
+    get:
+      summary: Получение всех товаров
+      description: Возвращает список всех доступных товаров.
+      responses:
+        '200':
+          description: Успешный запрос
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+    post:
+      summary: Добавление нового товара (или нескольких)
+      description: Добавляет новый товар в список. Можно добавить один товар или массив товаров.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: '#/components/schemas/Product'
+                - type: array
+                  items:
+                    $ref: '#/components/schemas/Product'
+      responses:
+        '201':
+          description: Товар(ы) успешно добавлен(ы)
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Product'
+                  - type: array
+                    items:
+                      $ref: '#/components/schemas/Product'
+        '400':
+          description: Некорректный запрос (например, неверные данные товара)
+        '500':
+          description: Ошибка сервера при добавлении товара
+
+  /products/{id}:
+    get:
+      summary: Получение товара по ID
+      description: Возвращает информацию о товаре по указанному ID.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: ID товара
+      responses:
+        '200':
+          description: Успешный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '404':
+          description: Товар не найден
+        '400':
+          description: Некорректный ID товара
+
+    put:
+      summary: Редактирование информации о товаре
+      description: Обновляет информацию о товаре с указанным ID.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: ID товара
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+      responses:
+        '200':
+          description: Товар успешно обновлен
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '404':
+          description: Товар не найден
+        '400':
+          description: Некорректный запрос (например, неверные данные товара)
+        '500':
+          description: Ошибка сервера при обновлении товара
+
+    delete:
+      summary: Удаление товара по ID
+      description: Удаляет товар с указанным ID из списка.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: ID товара
+      responses:
+        '204':
+          description: Товар успешно удален (No Content)
+        '404':
+          description: Товар не найден
+        '400':
+          description: Некорректный ID товара
+        '500':
+          description: Ошибка сервера при удалении товара
+
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID товара (автоматически генерируется сервером)
+          readOnly: true
+        name:
+          type: string
+          description: Название товара
+        price:
+          type: integer
+          description: Стоимость товара
+        description:
+          type: string
+          description: Описание товара
+        category:
+          type: array
+          items:
+            type: string
+          description: Категории товара (массив строк)
+        image:
+          type: string
+          description: URL изображения (необязательно)
+      required:
+        - name
+        - price
+        - description
+        - category

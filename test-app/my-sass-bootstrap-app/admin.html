@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Админ-панель</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 20px;
+        }
+        button {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Админ-панель</h1>
+
+    <div>
+        <button onclick="addProduct()">Добавить товар</button>
+        <button onclick="editProduct()">Редактировать товар</button>
+        <button onclick="deleteProduct()">Удалить товар</button>
+    </div>
+
+    <script>
+        const apiUrl = 'http://localhost:8080/products'; // URL вашего API
+
+        // Функция добавления товара
+        async function addProduct() {
+            const newProduct = {
+                name: prompt('Введите название товара:'),
+                price: parseFloat(prompt('Введите цену товара:')),
+                description: prompt('Введите описание товара:'),
+                category: prompt('Введите категории товара (через запятую):').split(',')
+            };
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(newProduct)
+                });
+
+                if (response.ok) {
+                    alert('Товар успешно добавлен!');
+                    // TODO: Обновить список товаров на странице
+                } else {
+                    alert('Ошибка при добавлении товара: ' + response.status);
+                }
+            } catch (error) {
+                console.error('Ошибка:', error);
+                alert('Произошла ошибка при отправке запроса.');
+            }
+        }
+
+        // Функция редактирования товара
+        async function editProduct() {
+            const productId = prompt('Введите ID товара для редактирования:');
+            const updatedProduct = {
+                name: prompt('Введите новое название товара:'),
+                price: parseFloat(prompt('Введите новую цену товара:')),
+                description: prompt('Введите новое описание товара:'),
+                category: prompt('Введите новые категории товара (через запятую):').split(',')
+            };
+
+            try {
+                const response = await fetch(`${apiUrl}/${productId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(updatedProduct)
+                });
+
+                if (response.ok) {
+                    alert('Товар успешно отредактирован!');
+                    // TODO: Обновить список товаров на странице
+                } else {
+                    alert('Ошибка при редактировании товара: ' + response.status);
+                }
+            } catch (error) {
+                console.error('Ошибка:', error);
+                alert('Произошла ошибка при отправке запроса.');
+            }
+        }
+
+        // Функция удаления товара
+        async function deleteProduct() {
+            const productId = prompt('Введите ID товара для удаления:');
+
+            try {
+                const response = await fetch(`${apiUrl}/${productId}`, {
+                    method: 'DELETE'
+                });
+
+                if (response.ok) {
+                    alert('Товар успешно удален!');
+                    // TODO: Обновить список товаров на странице
+                } else {
+                    alert('Ошибка при удалении товара: ' + response.status);
+                }
+            } catch (error) {
+                console.error('Ошибка:', error);
+                alert('Произошла ошибка при отправке запроса.');
+            }
+        }
+    </script>
+</body>
+</html>

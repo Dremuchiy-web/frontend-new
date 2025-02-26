@@ -3,21 +3,117 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sass + Bootstrap Example</title>
-  <link rel="stylesheet" href="css/style.css">  <!-- Ссылка на скомпилированный CSS -->
+  <title>VanShop - Каталог товаров</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* Встроенные стили для упрощения (можно перенести в style.css) */
+    body {
+      font-family: sans-serif;
+      margin: 0;
+    }
+
+    header {
+      background-color: #f0f0f0;
+      padding: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header h1 {
+      margin: 0;
+    }
+
+    header h1 a {
+      text-decoration: none;
+      color: black;
+    }
+
+    header h1 a span {
+      text-decoration: underline;
+    }
+
+    .search-bar {
+      display: flex;
+    }
+
+    .search-bar input {
+      padding: 5px;
+      border: 1px solid #ccc;
+    }
+
+    .search-bar button {
+      padding: 5px 10px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    .header-buttons {
+      display: flex;
+    }
+
+    .header-buttons button {
+      margin-left: 10px;
+      padding: 5px 10px;
+    }
+
+    #products-container {
+      display: flex;
+      flex-wrap: wrap;
+      padding: 20px;
+      justify-content: space-around;
+    }
+
+    .product-card {
+      width: 200px; /* или другая ширина */
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
+    .product-card img {
+      max-width: 100%;
+      height: auto;
+    }
+  </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Привет, мир!</h1>
-    <div class="row">
-      <div class="col-md-6">
-        <p>Первый текстовый блок. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-      </div>
-      <div class="col-md-6">
-        <p>Второй текстовый блок. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-      </div>
+  <header>
+    <h1><a href="#">Van<span>Shop</span></a></h1>
+  </header>
+
+  <main>
+    <h2>Товары</h2>
+    <div id="products-container">
+      <!-- Здесь будут карточки товаров (заполняется JavaScript) -->
     </div>
-    <button class="my-button">Нажми меня</button>
-  </div>
+  </main>
+
+  <script>
+    fetch('http://localhost:3000/products') // Запрос к серверу
+      .then(response => response.json())
+      .then(products => {
+        const container = document.getElementById('products-container');
+        products.forEach(product => {
+          const card = document.createElement('div');
+          card.classList.add('product-card');
+
+          card.innerHTML = `
+            <img src="" alt="${product.name}" width="200" height="200">
+            <h3>${product.name}</h3>
+            <p>Цена: ${product.price} руб.</p>
+            <p>${product.description}</p>
+          `;
+          container.appendChild(card);
+        });
+      })
+      .catch(error => {
+        console.error('Ошибка при получении данных:', error);
+        container.innerHTML = '<p>Ошибка при загрузке товаров.</p>';
+      });
+  </script>
 </body>
 </html>

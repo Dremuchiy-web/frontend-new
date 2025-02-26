@@ -1,5 +1,3 @@
-// scss/style.scss
-// Переменные
 @import "../node_modules/bootstrap/scss/bootstrap";
 $primary-color: #007bff;
 $secondary-color: #6c757d;
@@ -20,7 +18,7 @@ h1 {
   border: none;
   cursor: pointer;
 
-  &:hover {  // Вложенность для стилизации при наведении
+  &:hover { 
     background-color: darken($secondary-color, 10%);
   }
 }
