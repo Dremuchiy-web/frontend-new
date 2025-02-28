@@ -6,7 +6,6 @@
   <title>VanShop - Каталог товаров</title>
   <link rel="stylesheet" href="css/style.css">
   <style>
-    /* Встроенные стили для упрощения (можно перенести в style.css) */
     body {
       font-family: sans-serif;
       margin: 0;
@@ -33,32 +32,6 @@
       text-decoration: underline;
     }
 
-    .search-bar {
-      display: flex;
-    }
-
-    .search-bar input {
-      padding: 5px;
-      border: 1px solid #ccc;
-    }
-
-    .search-bar button {
-      padding: 5px 10px;
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      cursor: pointer;
-    }
-
-    .header-buttons {
-      display: flex;
-    }
-
-    .header-buttons button {
-      margin-left: 10px;
-      padding: 5px 10px;
-    }
-
     #products-container {
       display: flex;
       flex-wrap: wrap;
@@ -67,7 +40,7 @@
     }
 
     .product-card {
-      width: 200px; /* или другая ширина */
+      width: 200px;
       border: 1px solid #ccc;
       padding: 10px;
       margin-bottom: 10px;
@@ -88,31 +61,36 @@
   <main>
     <h2>Товары</h2>
     <div id="products-container">
-      <!-- Здесь будут карточки товаров (заполняется JavaScript) -->
+      <!-- Здесь будут карточки товаров -->
     </div>
   </main>
 
   <script>
-    fetch('http://localhost:3000/products') // Запрос к серверу
-      .then(response => response.json())
+    const productsContainer = document.getElementById('products-container');
+    const apiUrl = 'http://localhost:8080/products';
+
+    fetch(apiUrl)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+      })
       .then(products => {
-        const container = document.getElementById('products-container');
         products.forEach(product => {
           const card = document.createElement('div');
           card.classList.add('product-card');
-
           card.innerHTML = `
-            <img src="" alt="${product.name}" width="200" height="200">
+            <img src="" alt="${product.name}" width="100">
             <h3>${product.name}</h3>
-            <p>Цена: ${product.price} руб.</p>
-            <p>${product.description}</p>
+            <p>Price: ${product.price}</p>
           `;
-          container.appendChild(card);
+          productsContainer.appendChild(card);
         });
       })
       .catch(error => {
         console.error('Ошибка при получении данных:', error);
-        container.innerHTML = '<p>Ошибка при загрузке товаров.</p>';
+        productsContainer.innerHTML = '<p>Ошибка при загрузке товаров.</p>';
       });
   </script>
 </body>

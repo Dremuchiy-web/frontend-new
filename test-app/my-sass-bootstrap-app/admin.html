@@ -3,37 +3,124 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Админ-панель</title>
+    <title>Админ Панель</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body {
             font-family: sans-serif;
-            margin: 20px;
+            background-color: #f8f9fa;
         }
-        button {
-            margin-right: 10px;
+
+        .container {
+            margin-top: 20px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        #product-list {
+            margin-top: 30px;
+        }
+
+        .product-item {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+            background-color: white;
         }
     </style>
 </head>
 <body>
-    <h1>Админ-панель</h1>
+    <div class="container">
+        <h1>Админ Панель</h1>
 
-    <div>
-        <button onclick="addProduct()">Добавить товар</button>
-        <button onclick="editProduct()">Редактировать товар</button>
-        <button onclick="deleteProduct()">Удалить товар</button>
+        <h2>Добавить Новый Товар</h2>
+        <form id="addProductForm">
+            <div class="form-group">
+                <label for="name">Название:</label>
+                <input type="text" class="form-control" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="price">Цена:</label>
+                <input type="number" class="form-control" id="price" name="price" required>
+            </div>
+            <div class="form-group">
+                <label for="description">Описание:</label>
+                <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="category">Категория:</label>
+                <input type="text" class="form-control" id="category" name="category" required>
+            </div>
+            <button type="button" class="btn btn-primary" onclick="addProduct()">Добавить Товар</button>
+        </form>
+
+        <h2>Редактировать/Удалить Товары</h2>
+        <div id="product-list">
+        </div>
     </div>
 
-    <script>
-        const apiUrl = 'http://localhost:8080/products'; // URL вашего API
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-        // Функция добавления товара
+    <script>
+        const apiUrl = 'http://localhost:8080/products';
+
+        // Load products on page load
+        loadProducts();
+
+        // Load Products Function
+        async function loadProducts() {
+            try {
+                const response = await fetch(apiUrl);
+                if (!response.ok) {
+                    throw new Error('Ошибка при загрузке товаров');
+                }
+                const products = await response.json();
+                const productList = document.getElementById('product-list');
+                productList.innerHTML = ''; // Clear the list
+
+                products.forEach(product => {
+                    const productItem = document.createElement('div');
+                    productItem.classList.add('product-item', 'd-flex', 'justify-content-between', 'align-items-center'); // Add Bootstrap classes
+                    productItem.innerHTML = `
+                        <div>
+                            <p><b>ID:</b> ${product.id}</p>
+                            <p><b>Название:</b> ${product.name}</p>
+                        </div>
+                        <div>
+                            <button class="btn btn-sm btn-info mr-2" onclick="editProduct(${product.id})">Редактировать</button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteProduct(${product.id})">Удалить</button>
+                        </div>
+                    `;
+                    productList.appendChild(productItem);
+                });
+            } catch (error) {
+                console.error('Ошибка при загрузке товаров:', error);
+                alert('Ошибка при загрузке товаров.  Проверьте консоль.');
+            }
+        }
+
+        // Add Product Function
         async function addProduct() {
-            const newProduct = {
-                name: prompt('Введите название товара:'),
-                price: parseFloat(prompt('Введите цену товара:')),
-                description: prompt('Введите описание товара:'),
-                category: prompt('Введите категории товара (через запятую):').split(',')
-            };
+            const form = document.getElementById('addProductForm');
+            const formData = new FormData(form);
+
+            const newProduct = {};
+            formData.forEach((value, key) => {
+                newProduct[key] = value;
+            });
+
+            newProduct.price = parseFloat(newProduct.price);
+            newProduct.category = [newProduct.category];
 
             try {
                 const response = await fetch(apiUrl, {
@@ -46,24 +133,29 @@
 
                 if (response.ok) {
                     alert('Товар успешно добавлен!');
-                    // TODO: Обновить список товаров на странице
+                    form.reset();
+                    loadProducts(); // Refresh the list
                 } else {
-                    alert('Ошибка при добавлении товара: ' + response.status);
+                    alert('Не удалось добавить товар. Статус: ' + response.status);
                 }
             } catch (error) {
                 console.error('Ошибка:', error);
-                alert('Произошла ошибка при отправке запроса.');
+                alert('Произошла ошибка: ' + error);
             }
         }
 
-        // Функция редактирования товара
-        async function editProduct() {
-            const productId = prompt('Введите ID товара для редактирования:');
+        // Edit Product Function
+        async function editProduct(productId) {
+            const newName = prompt("Введите новое название:");
+            const newPrice = prompt("Введите новую цену:");
+            const newDescription = prompt("Введите новое описание:");
+            const newCategory = prompt("Введите новую категорию:");
+
             const updatedProduct = {
-                name: prompt('Введите новое название товара:'),
-                price: parseFloat(prompt('Введите новую цену товара:')),
-                description: prompt('Введите новое описание товара:'),
-                category: prompt('Введите новые категории товара (через запятую):').split(',')
+                name: newName,
+                price: parseFloat(newPrice),
+                description: newDescription,
+                category: [newCategory]
             };
 
             try {
@@ -76,35 +168,35 @@
                 });
 
                 if (response.ok) {
-                    alert('Товар успешно отредактирован!');
-                    // TODO: Обновить список товаров на странице
+                    alert('Товар успешно обновлен!');
+                    loadProducts(); // Refresh the list
                 } else {
-                    alert('Ошибка при редактировании товара: ' + response.status);
+                    alert('Не удалось обновить товар. Статус: ' + response.status);
                 }
             } catch (error) {
-                console.error('Ошибка:', error);
-                alert('Произошла ошибка при отправке запроса.');
+                console.error('Ошибка обновления товара:', error);
+                alert('Ошибка обновления товара');
             }
         }
 
-        // Функция удаления товара
-        async function deleteProduct() {
-            const productId = prompt('Введите ID товара для удаления:');
+        // Delete Product Function
+        async function deleteProduct(productId) {
+            if (confirm("Вы уверены, что хотите удалить этот товар?")) {
+                try {
+                    const response = await fetch(`${apiUrl}/${productId}`, {
+                        method: 'DELETE'
+                    });
 
-            try {
-                const response = await fetch(`${apiUrl}/${productId}`, {
-                    method: 'DELETE'
-                });
-
-                if (response.ok) {
-                    alert('Товар успешно удален!');
-                    // TODO: Обновить список товаров на странице
-                } else {
-                    alert('Ошибка при удалении товара: ' + response.status);
+                    if (response.ok) {
+                        alert('Товар успешно удален!');
+                        loadProducts(); // Refresh the list
+                    } else {
+                        alert('Не удалось удалить товар. Статус: ' + response.status);
+                    }
+                } catch (error) {
+                    console.error('Ошибка удаления товара:', error);
+                    alert('Ошибка удаления товара');
                 }
-            } catch (error) {
-                console.error('Ошибка:', error);
-                alert('Произошла ошибка при отправке запроса.');
             }
         }
     </script>

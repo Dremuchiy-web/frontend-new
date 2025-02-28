@@ -1,25 +1,17 @@
 {
-    "name": "my-sass-bootstrap-app",
+    "name": "eshop",
     "version": "1.0.0",
-    "description": "E-commerce app with admin panel",
+    "description": "E-commerce app",
     "main": "server.js",
     "scripts": {
-        "start-web": "node server.js",
-        "start-api": "node api/server.js",
-        "compile-sass": "sass scss:css",
-        "watch-sass": "sass --watch scss:css",
-        "start": "live-server",
-        "serve": "node server.js"
+      "start": "node server.js",
+      "start-web": "node server.js",
+      "start-api": "node api/server.js"
     },
+    "author": "Your Name",
+    "license": "MIT",
     "dependencies": {
-        "bootstrap": "^5.3.0",
-        "cors": "^2.8.5",
-        "express": "^4.21.2",
-        "js-yaml": "^4.1.0",
-        "sass": "^1.60.0",
-        "swagger-ui-express": "^5.0.0"
-    },
-    "devDependencies": {
-        "live-server": "^1.2.2"
+      "cors": "^2.8.5",
+      "express": "^4.18.2"
     }
-}
+  }
