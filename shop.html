@@ -5,6 +5,7 @@
     <title>VanShop - Интернет-магазин</title>
     <link href="shop.css" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
 
@@ -13,10 +14,27 @@
     </header>
 
     <div class="container">
-        <div class="category-filter">
-            <h3>Категории:</h3>
-            <div id="categories"></div>
+        <div class="filters-container">
+             <div class="search-filter">
+                <label for="search">Поиск:</label>
+                <input type="text" id="search" placeholder="Введите название товара">
+            </div>
+
+            <div class="price-filter">
+                <label for="minPrice">Цена от:</label>
+                <input type="number" id="minPrice" placeholder="Мин. цена">
+                <label for="maxPrice">Цена до:</label>
+                <input type="number" id="maxPrice" placeholder="Макс. цена">
+                <button id="applyPriceFilter">Применить</button>
+            </div>
+
+            <div class="category-filter">
+                <h3>Категории:</h3>
+                <div id="categories"></div>
+            </div>
+
         </div>
+
         <div class="products-grid" id="products"></div>
     </div>
 
@@ -24,7 +42,108 @@
         &copy; 2024 VanShop. Все права защищены.
     </footer>
 
-    <script src="load-items.js"></script>
     <script src="websocket-user.js"></script>
+    <script>
+        // Получаем элементы фильтров
+        const searchInput = document.getElementById('search');
+        const minPriceInput = document.getElementById('minPrice');
+        const maxPriceInput = document.getElementById('maxPrice');
+        const applyPriceFilterButton = document.getElementById('applyPriceFilter');
+        const productsGrid = document.getElementById('products'); // Получаем контейнер для товаров
+        const categoriesContainer = document.getElementById('categories');
+
+        // Массив товаров (будет заполнен данными из data.json)
+        let products = [];
+        let categories = []; // Массив для хранения категорий
+
+        // Функция для отображения товаров на странице
+        function displayProducts(productsToDisplay) {
+            productsGrid.innerHTML = ''; // Очищаем текущие товары
+
+            productsToDisplay.forEach(product => {
+                const productCard = document.createElement('div');
+                productCard.classList.add('product-card');
+                productCard.innerHTML = `
+                    <h3>${product.name}</h3>
+                    <p>Цена: ${product.price} руб.</p>
+                    <p>${product.description}</p>
+                `;
+                productsGrid.appendChild(productCard);
+            });
+        }
+
+        // Функция для фильтрации товаров (обновленная)
+        function filterProducts() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const minPrice = parseFloat(minPriceInput.value) || 0;
+            const maxPrice = parseFloat(maxPriceInput.value) || Infinity;
+
+            // Получаем выбранные категории
+            const selectedCategoryIds = Array.from(document.querySelectorAll('#categories input[type="checkbox"]:checked'))
+                .map(checkbox => parseInt(checkbox.value));
+
+            let filteredProducts = products.filter(product => {
+                const nameMatch = product.name.toLowerCase().includes(searchTerm);
+                const priceMatch = product.price >= minPrice && product.price <= maxPrice;
+
+                // Фильтрация по категориям
+                let categoryMatch = true;
+                if (selectedCategoryIds.length > 0) {
+                    categoryMatch = product.categoryIds.some(categoryId => selectedCategoryIds.includes(categoryId));
+                }
+
+                return nameMatch && priceMatch && categoryMatch;
+            });
+
+            displayProducts(filteredProducts);
+        }
+
+        // Функция для отображения категорий
+        function displayCategories() {
+            categoriesContainer.innerHTML = ''; // Очищаем контейнер категорий
+
+            categories.forEach(category => {
+                const categoryLabel = document.createElement('label');
+                categoryLabel.innerHTML = `
+                    <input type="checkbox" value="${category.id}" id="category-${category.id}" name="category">
+                    ${category.name}
+                `;
+                categoriesContainer.appendChild(categoryLabel);
+
+                // Добавляем обработчик события change для каждой категории
+                categoryLabel.querySelector('input').addEventListener('change', filterProducts);
+            });
+        }
+
+        // Функция для загрузки данных из data.json
+        async function loadProducts() {
+            try {
+                const response = await fetch('data.json');
+                const data = await response.json();
+
+                if (data && data.products && data.categories) {
+                    products = data.products;
+                    categories = data.categories;
+                    displayProducts(products); // Отображаем товары после загрузки
+                    displayCategories(); // Отображаем категории после загрузки
+
+                } else {
+                    console.error('Ошибка: Неправильный формат data.json');
+                    productsGrid.innerHTML = '<p>Ошибка загрузки данных.</p>';
+                }
+            } catch (error) {
+                console.error('Ошибка при загрузке data.json:', error);
+                productsGrid.innerHTML = '<p>Ошибка загрузки данных.</p>';
+            }
+        }
+
+
+        // Обработчики событий
+        searchInput.addEventListener('input', filterProducts);
+        applyPriceFilterButton.addEventListener('click', filterProducts);
+
+        // Вызываем функцию загрузки товаров после загрузки страницы
+        window.addEventListener('load', loadProducts);
+    </script>
 </body>
 </html>

@@ -1,64 +1,109 @@
 {
-    "products": [
-      {
-        "id": 2,
-        "name": "Джинсы Levi's 501",
-        "price": 5999,
-        "description": "Классические прямые джинсы",
-        "categoryIds": [
-          1,
-          2
-        ]
-      },
-      {
-        "id": 3,
-        "name": "Футболка Uniqlo U",
-        "price": 1499,
-        "description": "Однотонная футболка из плотного хлопка",
-        "categoryIds": [
-          1
-        ]
-      },
-      {
-        "id": 5,
-        "name": "Шарф Burberry",
-        "price": 19999,
-        "description": "Шерстяной шарф с фирменным принтом",
-        "categoryIds": [
-          2
-        ]
-      },
-      {
-        "id": 6,
-        "name": "Куртка The North Face",
-        "price": 17999,
-        "description": "Водонепроницаемая куртка для активного отдыха",
-        "categoryIds": [
-          1
-        ]
-      },
-      {
-        "id": 7,
-        "name": "Кроссовки Adidas Stan Smith",
-        "price": 8999,
-        "description": "Культовые кожаные кроссовки",
-        "categoryIds": [
-          1
-        ]
-      }
-    ],
-    "categories": [
-      {
-        "id": 1,
-        "name": "Верхняя одежда"
-      },
-      {
-        "id": 2,
-        "name": "Аксессуары"
-      },
-      {
-        "id": 3,
-        "name": "Обувь"
-      }
-    ]
-  }
+  "products": [
+    {
+      "id": 2,
+      "name": "Джинсы Levi's 501",
+      "price": 5999,
+      "description": "Классические прямые джинсы, классика на все времена.",
+      "categoryIds": [
+        1,
+        2
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Футболка Uniqlo U",
+      "price": 1499,
+      "description": "Однотонная футболка из плотного хлопка Supima. Must-have в гардеробе.",
+      "categoryIds": [
+        1
+      ]
+    },
+    {
+      "id": 5,
+      "name": "Шарф Burberry",
+      "price": 19999,
+      "description": "Шерстяной шарф с фирменным принтом House Check. Сделано в Великобритании.",
+      "categoryIds": [
+        2
+      ]
+    },
+    {
+      "id": 6,
+      "name": "Куртка The North Face Nuptse",
+      "price": 24999,
+      "description": "Пуховая куртка для экстремально холодных условий. Классика TNF.",
+      "categoryIds": [
+        1
+      ]
+    },
+    {
+      "id": 7,
+      "name": "Кроссовки Adidas Stan Smith",
+      "price": 8999,
+      "description": "Культовые кожаные кроссовки, подходящие под любой образ.",
+      "categoryIds": [
+        3
+      ]
+    },
+    {
+      "id": 8,
+      "name": "Пальто Massimo Dutti",
+      "price": 29999,
+      "description": "Шерстяное пальто прямого кроя. Элегантность в каждой детали.",
+      "categoryIds": [
+        1
+      ]
+    },
+    {
+      "id": 9,
+      "name": "Свитшот Champion Reverse Weave",
+      "price": 7499,
+      "description": "Классический свитшот из плотного хлопка с логотипом Champion.",
+      "categoryIds": [
+        1
+      ]
+    },
+    {
+      "id": 10,
+      "name": "Рюкзак Fjallraven Kanken",
+      "price": 9999,
+      "description": "Практичный и стильный рюкзак из водоотталкивающей ткани Vinylon F.",
+      "categoryIds": [
+        2
+      ]
+    },
+    {
+      "id": 11,
+      "name": "Ботинки Dr. Martens 1460",
+      "price": 15999,
+      "description": "Культовые кожаные ботинки на воздушной подошве. Неубиваемая классика.",
+      "categoryIds": [
+        3
+      ]
+    },
+    {
+      "id": 12,
+      "name": "Шапка Carhartt WIP Watch Hat",
+      "price": 2499,
+      "description": "Вязаная шапка из акрила. Комфорт и стиль в холодную погоду.",
+      "categoryIds": [
+        2
+      ]
+    }
+  ],
+  "categories": [
+    {
+      "id": 1,
+      "name": "Верхняя одежда"
+    },
+    {
+      "id": 2,
+      "name": "Аксессуары"
+    },
+    {
+      "id": 3,
+      "name": "Обувь"
+    }
+  ]
+}

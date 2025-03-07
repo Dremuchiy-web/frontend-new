@@ -3,6 +3,7 @@ let allProducts = [];
 let allCategories = [];
 let selectedCategoryIds = [];
 
+
 async function executeGraphQL(query) {
     try {
         const response = await fetch(`${API_URL}/graphql`, {
