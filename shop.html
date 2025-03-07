@@ -14,6 +14,8 @@
     </header>
 
     <div class="container">
+
+
         <div class="filters-container">
              <div class="search-filter">
                 <label for="search">Поиск:</label>
@@ -32,6 +34,11 @@
                 <h3>Категории:</h3>
                 <div id="categories"></div>
             </div>
+
+             <div class="view-controls">
+                <button onclick="toggleDescription()">Скрыть/показать описание</button>
+                <button onclick="togglePrice()">Скрыть/показать цену</button>
+             </div>
 
         </div>
 
@@ -55,6 +62,8 @@
         // Массив товаров (будет заполнен данными из data.json)
         let products = [];
         let categories = []; // Массив для хранения категорий
+        let showDescription = true; // Показывать описание по умолчанию
+        let showPrice = true; // Показывать цену по умолчанию
 
         // Функция для отображения товаров на странице
         function displayProducts(productsToDisplay) {
@@ -63,11 +72,17 @@
             productsToDisplay.forEach(product => {
                 const productCard = document.createElement('div');
                 productCard.classList.add('product-card');
-                productCard.innerHTML = `
-                    <h3>${product.name}</h3>
-                    <p>Цена: ${product.price} руб.</p>
-                    <p>${product.description}</p>
-                `;
+
+                let productDetails = `<h3>${product.name}</h3>`;
+
+                if (showPrice && product.price !== undefined) {
+                    productDetails += `<p>Цена: ${product.price} руб.</p>`;
+                }
+                if (showDescription && product.description !== undefined) {
+                    productDetails += `<p>${product.description}</p>`;
+                }
+
+                productCard.innerHTML = productDetails;
                 productsGrid.appendChild(productCard);
             });
         }
@@ -114,6 +129,18 @@
                 categoryLabel.querySelector('input').addEventListener('change', filterProducts);
             });
         }
+  // Функция переключения видимости описания
+        window.toggleDescription = function() {
+            showDescription = !showDescription;
+            displayProducts(products);
+        };
+
+        // Функция переключения видимости цены
+        window.togglePrice = function() {
+            showPrice = !showPrice;
+            displayProducts(products);
+        };
+
 
         // Функция для загрузки данных из data.json
         async function loadProducts() {
@@ -136,7 +163,6 @@
                 productsGrid.innerHTML = '<p>Ошибка загрузки данных.</p>';
             }
         }
-
 
         // Обработчики событий
         searchInput.addEventListener('input', filterProducts);

@@ -239,3 +239,25 @@ footer {
 .price-filter button:hover {
   background-color: #0056b3;
 }
+/* View Controls Styles */
+.view-controls {
+  display: flex;
+  justify-content: flex-start; /* Align buttons to the left */
+  gap: 10px;              /* Add some spacing between the buttons */
+  margin-top: 15px;       /* Add some margin from the top */
+}
+
+.view-controls button {
+  padding: 8px 12px;      /* Smaller padding for the buttons */
+  font-size: 0.85rem;     /* Smaller font size */
+  border: none;           /* Remove default borders */
+  border-radius: 5px;     /* Add rounded corners */
+  background-color: #e9ecef; /* Light gray background */
+  color: #495057;         /* Dark gray text */
+  cursor: pointer;        /* Change cursor to a pointer on hover */
+  transition: background-color 0.2s ease-in-out; /* Smooth transition for hover effect */
+}
+
+.view-controls button:hover {
+  background-color: #dee2e6; /* Slightly darker gray on hover */
+}
