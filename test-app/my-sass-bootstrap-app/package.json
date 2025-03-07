@@ -1,0 +1,17 @@
+{
+    "name": "eshop",
+    "version": "1.0.0",
+    "description": "E-commerce app",
+    "main": "server.js",
+    "scripts": {
+      "start": "node server.js",
+      "start-web": "node server.js",
+      "start-api": "node api/server.js"
+    },
+    "author": "Your Name",
+    "license": "MIT",
+    "dependencies": {
+      "cors": "^2.8.5",
+      "express": "^4.18.2"
+    }
+  }

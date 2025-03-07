@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VanShop - Каталог товаров</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 0;
+    }
+
+    header {
+      background-color: #f0f0f0;
+      padding: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header h1 {
+      margin: 0;
+    }
+
+    header h1 a {
+      text-decoration: none;
+      color: black;
+    }
+
+    header h1 a span {
+      text-decoration: underline;
+    }
+
+    #products-container {
+      display: flex;
+      flex-wrap: wrap;
+      padding: 20px;
+      justify-content: space-around;
+    }
+
+    .product-card {
+      width: 200px;
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
+    .product-card img {
+      max-width: 100%;
+      height: auto;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1><a href="#">Van<span>Shop</span></a></h1>
+  </header>
+
+  <main>
+    <h2>Товары</h2>
+    <div id="products-container">
+      <!-- Здесь будут карточки товаров -->
+    </div>
+  </main>
+
+  <script>
+    const productsContainer = document.getElementById('products-container');
+    const apiUrl = 'http://localhost:8080/products';
+
+    fetch(apiUrl)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(products => {
+        products.forEach(product => {
+          const card = document.createElement('div');
+          card.classList.add('product-card');
+          card.innerHTML = `
+            <img src="" alt="${product.name}" width="100">
+            <h3>${product.name}</h3>
+            <p>Price: ${product.price}</p>
+          `;
+          productsContainer.appendChild(card);
+        });
+      })
+      .catch(error => {
+        console.error('Ошибка при получении данных:', error);
+        productsContainer.innerHTML = '<p>Ошибка при загрузке товаров.</p>';
+      });
+  </script>
+</body>
+</html>
