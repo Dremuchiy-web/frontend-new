@@ -1,0 +1,231 @@
+openapi: 3.0.0
+info:
+  title: Admin Panel API
+  version: 1.0.0
+  description: API для управления товарами интернет-магазина
+
+paths:
+  /products:
+    get:
+      summary: Получить список всех товаров
+      tags:
+        - Товары
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+        '500':
+          description: Ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    
+
+
+  /add_product:
+    post:
+      summary: Создать новый товар
+      tags:
+        - Товары
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductInput'
+      responses:
+        '201':
+          description: Товар успешно создан
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '500':
+          description: Ошибка при создании товара
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              
+  /products/{id}:
+    get:
+      summary: Получить товар по ID
+      tags:
+        - Товары
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID товара
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '404':
+          description: Товар не найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    put:
+      summary: Обновить товар по ID
+      tags:
+        - Товары
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID товара
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductInput'
+      responses:
+        '200':
+          description: Товар успешно обновлен
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '404':
+          description: Товар не найден
+        '500':
+          description: Ошибка при обновлении товара
+
+    delete:
+      summary: Удалить товар по ID
+      tags:
+        - Товары
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID товара
+      responses:
+        '204':
+          description: Товар успешно удален
+        '500':
+          description: Ошибка при удалении товара
+
+  /categories:
+    get:
+      summary: Получить список всех категорий
+      tags:
+        - Категории
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Category'
+        '500':
+          description: Ошибка сервера
+
+    post:
+      summary: Создать новую категорию
+      tags:
+        - Категории
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CategoryInput'
+      responses:
+        '201':
+          description: Категория успешно создана
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Уникальный идентификатор товара
+        name:
+          type: string
+          description: Название товара
+        price:
+          type: number
+          description: Цена товара
+        description:
+          type: string
+          description: Описание товара
+        categoryIds:
+          type: array
+          items:
+            type: integer
+          description: Массив ID категорий, к которым относится товар
+
+    ProductInput:
+      type: object
+      required:
+        - name
+        - price
+      properties:
+        name:
+          type: string
+          description: Название товара
+        price:
+          type: number
+          description: Цена товара
+        description:
+          type: string
+          description: Описание товара
+        categoryIds:
+          type: array
+          items:
+            type: integer
+          description: Массив ID категорий
+
+    Category:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Уникальный идентификатор категории
+        name:
+          type: string
+          description: Название категории
+
+    CategoryInput:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          description: Название категории
+
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Сообщение об ошибке 

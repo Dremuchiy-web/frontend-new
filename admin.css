@@ -1,0 +1,149 @@
+/* Общие стили */
+body {
+  font-family: 'Roboto', sans-serif; /* Современный шрифт */
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 30px; /* Увеличен отступ */
+  background-color: #f8f9fa; /* Светло-серый фон */
+  color: #343a40; /* Темно-серый текст */
+  line-height: 1.6;
+}
+
+h1 {
+  text-align: center;
+  color: #2c3e50; /* Темно-синий цвет */
+  margin-top: 20px;
+  margin-bottom: 30px;
+}
+
+/* Секции */
+.section {
+  margin-bottom: 30px;
+  padding: 30px; /* Увеличен отступ */
+  border: none; /* Убрана граница */
+  border-radius: 12px; /* Больше закругление углов */
+  background-color: #fff; /* Белый фон */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); /* Нежная тень */
+}
+
+.section h2 {
+  font-size: 1.5em;
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: #34495e; /* Еще один оттенок темно-синего */
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+}
+
+/* Формы */
+.form-group {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500; /* Полужирный шрифт */
+  color: #495057; /* Темно-серый цвет */
+}
+
+input,
+textarea {
+  width: 100%;
+  padding: 12px; /* Увеличен отступ */
+  margin-bottom: 15px;
+  border: 1px solid #ced4da; /* Светло-серая граница */
+  border-radius: 6px; /* Закругленные углы */
+  font-size: 1rem; /* Размер шрифта */
+  color: #495057; /* Темно-серый цвет */
+  box-sizing: border-box; /* Важно! */
+}
+
+textarea {
+  resize: vertical; /* Разрешить изменение высоты */
+  min-height: 120px; /* Минимальная высота */
+}
+
+/* Кнопки */
+button {
+  padding: 14px 24px; /* Увеличен размер */
+  margin-top: 15px;
+  background-color: #28a745; /* Зеленый Bootstrap */
+  color: #fff; /* Белый текст */
+  border: none;
+  border-radius: 6px; /* Закругленные углы */
+  cursor: pointer;
+  font-size: 1.1rem; /* Размер шрифта */
+  transition: background-color 0.2s ease-in-out; /* Плавный переход */
+}
+
+button:hover {
+  background-color: #218838; /* Более темный зеленый */
+}
+
+/* Списки товаров */
+.product-list,
+.category-list {
+  margin-top: 20px;
+}
+
+.product-list ul,
+.category-list ul {
+  list-style: none;
+  padding: 0;
+}
+
+.product-list li,
+.category-list li {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.product-list li:last-child,
+.category-list li:last-child {
+  border-bottom: none;
+}
+
+/* Стили для сообщений об успехе/ошибке (можно добавить при необходимости) */
+.success-message {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 4px;
+}
+
+.error-message {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 4px;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+  .section {
+      width: 95%;
+  }
+
+  h1 {
+      font-size: 2em;
+  }
+
+  .section h2 {
+      font-size: 1.3em;
+  }
+
+  .form-group input[type="text"],
+  .form-group input[type="number"],
+  .form-group textarea {
+      font-size: 0.9em;
+  }
+
+  button {
+      font-size: 0.9em;
+  }
+}
